@@ -31,6 +31,11 @@
                     localStorage.setItem('token', token);
                 } else {
                     result.err = err.details;
+
+                    // Ensure that optional fields are on the object
+                    result.err.name = result.err.name ? result.err.name : null;
+                    result.err.code = result.err.code ? result.err.code : null;
+                    result.err.statusCode = result.err.statusCode ? result.err.statusCode : null;
                 }
                 elmApp.ports.auth0authResult.send(result);
             });

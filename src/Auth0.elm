@@ -43,10 +43,10 @@ type alias Token =
 
 
 type alias AuthenticationError =
-    { name : String
-    , code : String
+    { name : Maybe String
+    , code : Maybe String
     , description : String
-    , statusCode : Int
+    , statusCode : Maybe Int
     }
 
 
@@ -66,7 +66,7 @@ mapResult result =
             Err msg
 
         ( Nothing, Nothing ) ->
-            Err { name = "unknown", code = "unknown", statusCode = 500, description = "No information was received from the authentication provider" }
+            Err { name = Nothing, code = Nothing, statusCode = Nothing, description = "No information was received from the authentication provider" }
 
         ( Nothing, Just user ) ->
             Ok user
