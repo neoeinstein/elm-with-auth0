@@ -42,7 +42,7 @@ init =
 -- Messages
 
 type Msg 
-    = Authentication Authentication.Msg 
+    = AuthenticationMsg Authentication.Msg 
 
 -- Ports
 
@@ -55,11 +55,11 @@ port auth0authResult : (Auth0.RawAuthenticationResult -> msg) -> Sub msg
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
     case msg of
-        Authentication authMsg ->
+        AuthenticationMsg authMsg ->
             let
                 ( authModel, cmd ) = Authentication.update authMsg model.authModel
             in
-                ( { model | authModel = authModel }, Cmd.map Authentication cmd )
+                ( { model | authModel = authModel }, Cmd.map AuthenticationMsg cmd )
 
 {-
     SUBSCRIPTIONS
@@ -67,7 +67,7 @@ update msg model =
 
 subscriptions : a -> Sub Msg
 subscriptions model = 
-    auth0authResult (Authentication.handleAuthResult >> Authentication)                
+    auth0authResult (Authentication.handleAuthResult >> AuthenticationMsg)                
                        
 {-
     VIEW
@@ -88,7 +88,7 @@ view model =
                     )
                 , p [] [
                     button
-                        [ class "btn btn-primary", onClick (Authentication (if Authentication.isLoggedIn model.authModel then Authentication.LogOut else Authentication.ShowLogIn)) ]
+                        [ class "btn btn-primary", onClick (AuthenticationMsg (if Authentication.isLoggedIn model.authModel then Authentication.LogOut else Authentication.ShowLogIn)) ]
                         [ text (if Authentication.isLoggedIn model.authModel then "Logout" else "Login")]
                     ]    
                 ]
