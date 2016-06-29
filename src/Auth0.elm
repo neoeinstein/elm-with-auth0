@@ -59,6 +59,7 @@ type alias RawAuthenticationResult =
     , ok : Maybe LoggedInUser
     }
 
+
 mapResult : RawAuthenticationResult -> AuthenticationResult
 mapResult result =
     case ( result.err, result.ok ) of

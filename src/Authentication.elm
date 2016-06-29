@@ -30,10 +30,13 @@ init : (Auth0.Options -> Cmd Msg) -> (() -> Cmd Msg) -> Maybe Auth0.LoggedInUser
 init showLock logOut initialData =
     { state =
         case initialData of
-            Just user -> Auth0.LoggedIn user
-            Nothing -> Auth0.LoggedOut
+            Just user ->
+                Auth0.LoggedIn user
+
+            Nothing ->
+                Auth0.LoggedOut
     , lastError = Nothing
-    , showLock = showLock 
+    , showLock = showLock
     , logOut = logOut
     }
 
@@ -61,17 +64,25 @@ update msg model =
 
 
 handleAuthResult : Auth0.RawAuthenticationResult -> Msg
-handleAuthResult = Auth0.mapResult >> AuthenticationResult
+handleAuthResult =
+    Auth0.mapResult >> AuthenticationResult
 
 
 tryGetUserProfile : Model -> Maybe Auth0.UserProfile
 tryGetUserProfile model =
     case model.state of
-        Auth0.LoggedIn user -> Just user.profile
-        Auth0.LoggedOut -> Nothing
+        Auth0.LoggedIn user ->
+            Just user.profile
+
+        Auth0.LoggedOut ->
+            Nothing
+
 
 isLoggedIn : Model -> Bool
 isLoggedIn model =
     case model.state of
-        Auth0.LoggedIn _ -> True
-        Auth0.LoggedOut -> False
+        Auth0.LoggedIn _ ->
+            True
+
+        Auth0.LoggedOut ->
+            False
