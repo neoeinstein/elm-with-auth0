@@ -83,7 +83,7 @@ view model =
                     ( case Authentication.tryGetUserProfile model.authModel of
                         Nothing -> [ text "Please log in" ]
                         Just user ->
-                            [ p [] [ img [ class "", src user.picture ] [] ]
+                            [ p [] [ img [ src user.picture ] [] ]
                             , p [] [ text ("Hello, " ++ user.name ++ "!") ]
                             ]
                     )
