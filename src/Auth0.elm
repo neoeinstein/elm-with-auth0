@@ -31,15 +31,10 @@ type alias Options =
 type alias UserProfile =
     { email : String
     , email_verified : Bool
-    , clientID : String 
-    , updated_at : String
     , name : String
     , nickname : String
     , picture : String
     , user_id : String
-    , identities : List 
-    , created_at : String 
-    , global_client_id : String 
     }
 
 

@@ -13,7 +13,7 @@ main =
     Html.program 
         { init = init 
         , update = update
-        , subscriptions = \_ -> Sub.none
+        , subscriptions = subscriptions
         , view = view
         }
     
@@ -48,7 +48,7 @@ type Msg
 port auth0showLock : Auth0.Options -> Cmd msg
 port auth0authResult : (Auth0.RawAuthenticationResult -> msg) -> Sub msg
 -- port setStorage : Model -> Cmd msg  
--- port removeStorage : Model -> Cmd msg        
+-- port removeStorage : Model -> Cmd msg
 
 -- Update
 
@@ -60,10 +60,15 @@ update msg model =
                 ( authModel, cmd ) = Authentication.update authMsg model.authModel
             in
                 ( { model | authModel = authModel }, Cmd.map Authentication cmd )
+
+-- Subscriptions
+
+subscriptions : a -> Sub Msg
+subscriptions model = 
+    auth0authResult (Authentication.handleAuthResult >> Authentication)                
                        
 {-
     VIEW
-    * Get a quote
 -}
 
 view : Model -> Html Msg
@@ -75,7 +80,7 @@ view model =
                     Nothing -> [ text "Please log in" ]
                     Just user ->
                         [ img [ height 50, width 50, src user.picture ] []
-                        , text ("Welcome, " ++ user.given_name ++ ".")
+                        , text ("Welcome, " ++ user.name ++ ".")
                         ]
                 )
             , button
