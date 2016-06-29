@@ -36,10 +36,10 @@
             });
         });
 
-        // elmApp.ports.logout.subscribe(function(state) {
-        //     lock.logout();
-        //     localStorage.removeItem('profile');
-        //     localStorage.removeItem('token');
-        // });
+        elmApp.ports.auth0logout.subscribe(function(state) {
+            lock.logout();
+            localStorage.removeItem('profile');
+            localStorage.removeItem('token');
+        });
     </script>
 </html>    
