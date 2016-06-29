@@ -25,9 +25,12 @@ type alias Model =
     }
 
 
-init : (Auth0.Options -> Cmd Msg) -> Model
-init showLock =
-    { state = Auth0.LoggedOut
+init : (Auth0.Options -> Cmd Msg) -> Maybe Auth0.LoggedInUser -> Model
+init showLock initialData =
+    { state =
+        case initialData of
+            Just user -> Auth0.LoggedIn user
+            Nothing -> Auth0.LoggedOut
     , lastError = Nothing
     , showLock = showLock
     }

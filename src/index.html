@@ -16,9 +16,10 @@
     <script src="//cdn.auth0.com/js/lock-9.1.min.js"></script>
     <script>
         var lock = new Auth0Lock('Rp1ZbPH6fK93lynaOt6HyQa3KcvN7Xl8', 'kmaida.auth0.com');
-        // var storedState = localStorage.getItem('model');
-        // var startingState = storedState ? JSON.parse(storedState) : null;
-        var elmApp = Elm.Main.fullscreen();
+        var storedProfile = localStorage.getItem('profile');
+        var storedToken = localStorage.getItem('token');
+        var authData = storedProfile && storedToken ? { profile: JSON.parse(storedProfile), token: storedToken } : null;
+        var elmApp = Elm.Main.fullscreen(authData);
 
         elmApp.ports.auth0showLock.subscribe(function(opts) {
             lock.show(opts, function(err, profile, token) {
@@ -26,8 +27,8 @@
 
                 if (!err) {
                     result.ok = { profile: profile, token: token };
-                    // localStorage.setItem('profile', JSON.stringify(profile));
-                    // localStorage.setItem('token', token);
+                    localStorage.setItem('profile', JSON.stringify(profile));
+                    localStorage.setItem('token', token);
                 } else {
                     result.err = err.details;
                 }

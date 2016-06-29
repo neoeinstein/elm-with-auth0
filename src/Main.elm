@@ -8,9 +8,9 @@ import Html.Attributes exposing (..)
 import Auth0
 import Authentication
 
-main : Program Never
+main : Program (Maybe Auth0.LoggedInUser)
 main = 
-    Html.program 
+    Html.programWithFlags 
         { init = init 
         , update = update
         , subscriptions = subscriptions
@@ -29,9 +29,9 @@ type alias Model =
     INIT
 -}
 
-init : ( Model, Cmd Msg)  
-init =
-    ( Model (Authentication.init auth0showLock), Cmd.none )
+init : Maybe Auth0.LoggedInUser -> ( Model, Cmd Msg)  
+init initialUser =
+    ( Model (Authentication.init auth0showLock initialUser), Cmd.none )
        
 {-
     UPDATE
