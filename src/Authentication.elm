@@ -22,17 +22,19 @@ type alias Model =
     { state : Auth0.AuthenticationState
     , lastError : Maybe Auth0.AuthenticationError
     , showLock : Auth0.Options -> Cmd Msg
+    , logOut : Cmd Msg
     }
 
 
-init : (Auth0.Options -> Cmd Msg) -> Maybe Auth0.LoggedInUser -> Model
-init showLock initialData =
+init : (Auth0.Options -> Cmd Msg) -> (() -> Cmd Msg) -> Maybe Auth0.LoggedInUser -> Model
+init showLock logOut initialData =
     { state =
         case initialData of
             Just user -> Auth0.LoggedIn user
             Nothing -> Auth0.LoggedOut
     , lastError = Nothing
-    , showLock = showLock
+    , showLock = showLock 
+    , logOut = logOut
     }
 
 
@@ -55,7 +57,7 @@ update msg model =
             ( model, model.showLock Auth0.defaultOpts )
 
         LogOut ->
-            ( { model | state = Auth0.LoggedOut }, Cmd.none )
+            ( { model | state = Auth0.LoggedOut }, model.logOut )
 
 
 handleAuthResult : Auth0.RawAuthenticationResult -> Msg

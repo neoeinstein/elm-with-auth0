@@ -31,7 +31,7 @@ type alias Model =
 
 init : Maybe Auth0.LoggedInUser -> ( Model, Cmd Msg)  
 init initialUser =
-    ( Model (Authentication.init auth0showLock initialUser), Cmd.none )
+    ( Model (Authentication.init auth0showLock auth0logout initialUser), Cmd.none )
        
 {-
     UPDATE
