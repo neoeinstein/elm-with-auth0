@@ -48,8 +48,7 @@ type Msg
 
 port auth0showLock : Auth0.Options -> Cmd msg
 port auth0authResult : (Auth0.RawAuthenticationResult -> msg) -> Sub msg
--- port setStorage : Model -> Cmd msg  
--- port removeStorage : Model -> Cmd msg
+-- port logout : Model -> Cmd msg
 
 -- Update
 

@@ -26,6 +26,8 @@
 
                 if (!err) {
                     result.ok = { profile: profile, token: token };
+                    // localStorage.setItem('profile', JSON.stringify(profile));
+                    // localStorage.setItem('token', token);
                 } else {
                     result.err = err.details;
                 }
@@ -33,12 +35,10 @@
             });
         });
 
-        // elmApp.ports.setStorage.subscribe(function(state) {
-        //     localStorage.setItem('model', JSON.stringify(state));
-        // });
-
-        // elmApp.ports.removeStorage.subscribe(function() {
-        //     localStorage.removeItem('model');
+        // elmApp.ports.logout.subscribe(function(state) {
+        //     lock.logout();
+        //     localStorage.removeItem('profile');
+        //     localStorage.removeItem('token');
         // });
     </script>
 </html>    
