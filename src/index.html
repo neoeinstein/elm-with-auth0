@@ -37,9 +37,9 @@
         });
 
         elmApp.ports.auth0logout.subscribe(function(opts) {
-            lock.logout();
             localStorage.removeItem('profile');
             localStorage.removeItem('token');
+            lock.logout();
         });
     </script>
 </html>    
