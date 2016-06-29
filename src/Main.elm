@@ -19,15 +19,16 @@ main =
     
 {- 
     MODEL
-    * Model type 
-    * Initialize model with empty values
-    * Initialize with a random quote
 -}
 
 type alias Model =
     { authModel : Authentication.Model
     }
-    
+
+{-
+    INIT
+-}
+
 init : ( Model, Cmd Msg)  
 init =
     ( Model (Authentication.init auth0showLock), Cmd.none )
@@ -61,7 +62,9 @@ update msg model =
             in
                 ( { model | authModel = authModel }, Cmd.map Authentication cmd )
 
--- Subscriptions
+{-
+    SUBSCRIPTIONS
+-}
 
 subscriptions : a -> Sub Msg
 subscriptions model = 
@@ -73,18 +76,22 @@ subscriptions model =
 
 view : Model -> Html Msg
 view model =
-    div [ class "row" ] [
-        div [ class "jumbotron col-md-offset-4 col-md-6 text-center" ]
-            [ div []
-                ( case Authentication.tryGetUserProfile model.authModel of
-                    Nothing -> [ text "Please log in" ]
-                    Just user ->
-                        [ img [ height 50, width 50, src user.picture ] []
-                        , text ("Welcome, " ++ user.name ++ ".")
-                        ]
-                )
-            , button
-                [ class "btn btn-primary", onClick (Authentication (if Authentication.isLoggedIn model.authModel then Authentication.LogOut else Authentication.ShowLogIn)) ]
-                [ text (if Authentication.isLoggedIn model.authModel then "Logout" else "Login")]
-            ]
-    ]    
+    div [ class "container" ] [
+        div [ class "row" ] [
+            div [ class "jumbotron text-center" ]
+                [ p []
+                    ( case Authentication.tryGetUserProfile model.authModel of
+                        Nothing -> [ text "Please log in" ]
+                        Just user ->
+                            [ p [] [ img [ class "", src user.picture ] [] ]
+                            , p [] [ text ("Hello, " ++ user.name ++ "!") ]
+                            ]
+                    )
+                , p [] [
+                    button
+                        [ class "btn btn-primary", onClick (Authentication (if Authentication.isLoggedIn model.authModel then Authentication.LogOut else Authentication.ShowLogIn)) ]
+                        [ text (if Authentication.isLoggedIn model.authModel then "Logout" else "Login")]
+                    ]    
+                ]
+        ] 
+    ]       
